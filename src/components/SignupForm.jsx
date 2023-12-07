@@ -23,38 +23,27 @@ const Signup = () => {
     getValues, // Add getValues from useForm
   } = useForm();
 
-  const onSubmit = (data) => {
-    // Handle sign-up logic here
-    console.log(data);
-  };
-  // const Signup = () => {
-  //   const {
-  //     handleSubmit,
-  //     control,
-  //     formState: { errors },
-  //   } = useForm();
+const onSubmit = async (data) => {
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-  //   const onSubmit = async (data) => {
-  //     try {
-  //       const response = await fetch('http://localhost:5000/api/auth/signup', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify(data),
-  //       });
-
-  //       if (response.ok) {
-  //         console.log('User signed up successfully!');
-  //         // Redirect or perform any other action upon successful signup
-  //       } else {
-  //         const errorData = await response.json();
-  //         console.error('Signup failed:', errorData.message);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error during signup:', error);
-  //     }
-  //   };
+    if (response.ok) {
+      console.log("User created successfully");
+      // Optionally, you can redirect the user to the login page or perform other actions
+    } else {
+      const errorData = await response.json();
+      console.error("Error creating user:", errorData.message);
+    }
+  } catch (error) {
+    console.error("An error occurred:", error.message);
+  }
+};
 
   return (
     <ThemeProvider theme={defaultTheme}>
