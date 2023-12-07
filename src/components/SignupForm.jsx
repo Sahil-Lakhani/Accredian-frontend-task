@@ -15,18 +15,46 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 
 const defaultTheme = createTheme();
-
 const Signup = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
+    getValues, // Add getValues from useForm
   } = useForm();
 
   const onSubmit = (data) => {
     // Handle sign-up logic here
     console.log(data);
   };
+  // const Signup = () => {
+  //   const {
+  //     handleSubmit,
+  //     control,
+  //     formState: { errors },
+  //   } = useForm();
+
+  //   const onSubmit = async (data) => {
+  //     try {
+  //       const response = await fetch('http://localhost:5000/api/auth/signup', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(data),
+  //       });
+
+  //       if (response.ok) {
+  //         console.log('User signed up successfully!');
+  //         // Redirect or perform any other action upon successful signup
+  //       } else {
+  //         const errorData = await response.json();
+  //         console.error('Signup failed:', errorData.message);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error during signup:', error);
+  //     }
+  //   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -122,8 +150,7 @@ const Signup = () => {
               rules={{
                 required: "Confirm Password is required",
                 validate: (value) =>
-                  value === control.getValues("password") ||
-                  "Passwords do not match",
+                  value === getValues("password") || "Passwords do not match",
               }}
               render={({ field }) => (
                 <TextField
@@ -152,12 +179,7 @@ const Signup = () => {
             {/* Login link */}
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link
-                  component={RouterLink}
-                  to="/"
-                  variant="body2"
-                  onClick=""
-                >
+                <Link component={RouterLink} to="/" variant="body2" onClick="">
                   Already have an account? Login
                 </Link>
               </Grid>
