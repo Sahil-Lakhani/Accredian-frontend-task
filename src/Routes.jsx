@@ -4,15 +4,16 @@ import {
   Routes as ReactRoutes,
 } from "react-router-dom";
 import Login from "./components/Login"
-import Signup from "./components/SignupForm"; // Correct import path
+import Signup from "./components/SignupForm"; // 
+import HomePage from "./components/HomePage";
 
 const Routes = () => {
   return (
     <Router>
       <ReactRoutes>
         <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />{" "}
-        {/* Corrected component */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/home" element={<HomePage />} />
       </ReactRoutes>
     </Router>
   );

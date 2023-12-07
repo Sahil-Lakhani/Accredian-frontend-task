@@ -1,4 +1,3 @@
-
 import { useForm, Controller } from "react-hook-form";
 import {
   TextField,
@@ -13,21 +12,44 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    // Handle login logic here
-    console.log(data);
-  };
+const onSubmit = async (data) => {
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      // Successful login
+      console.log("Login successful");
+      // Redirect to the home page or any other route
+      navigate("/home");
+    } else {
+      // Handle login failure, show error message, etc.
+      console.error("Login failed");
+      const result = await response.json();
+      console.log(result.message); // You can display this message to the user
+    }
+  } catch (error) {
+    console.error("Error during login", error);
+  }
+};
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -123,7 +145,6 @@ const Login = () => {
           </Box>
         </Box>
       </Container>
-      ;
     </ThemeProvider>
   );
 };
