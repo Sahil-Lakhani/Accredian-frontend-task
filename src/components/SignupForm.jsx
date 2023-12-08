@@ -21,7 +21,7 @@ const Signup = () => {
     handleSubmit,
     control,
     formState: { errors },
-    getValues, // Add getValues from useForm
+    getValues, 
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -38,7 +38,6 @@ const Signup = () => {
     if (response.ok) {
       console.log("User created successfully");
       navigate("/home");
-      // Optionally, you can redirect the user to the login page or perform other actions
     } else {
       const errorData = await response.json();
       console.error("Error creating user:", errorData.message);
