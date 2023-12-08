@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   TextField,
@@ -18,6 +19,7 @@ const defaultTheme = createTheme();
 
 const Login = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState(null); // Add error state
 
   const {
     handleSubmit,
@@ -25,31 +27,32 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-const onSubmit = async (data) => {
-  try {
-    const response = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (response.ok) {
-      // Successful login
-      console.log("Login successful");
-      // Redirect to the home page or any other route
-      navigate("/home");
-    } else {
-      // Handle login failure, show error message, etc.
-      console.error("Login failed");
-      const result = await response.json();
-      console.log(result.message); // You can display this message to the user
+      if (response.ok) {
+        // Successful login
+        console.log("Login successful");
+        navigate("/home");
+      } else {
+        // Handle login failure
+        const result = await response.json();
+        // Set an error to display to the user
+        setError(result.message);
+
+        console.error("Login failed:", result.message);
+      }
+    } catch (error) {
+      console.error("Error during login", error);
     }
-  } catch (error) {
-    console.error("Error during login", error);
-  }
-};
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -124,6 +127,14 @@ const onSubmit = async (data) => {
             >
               Sign In
             </Button>
+
+            {/* Display error msg if there is an error */}
+            {error && (
+              <Typography variant="body2" color="error" sx={{ mt: 1, mb:2 }}>
+                {error}
+              </Typography>
+            )}
+
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -131,7 +142,6 @@ const onSubmit = async (data) => {
                 </Link>
               </Grid>
               <Grid item>
-                {/* Use RouterLink for internal navigation */}
                 <Link
                   component={RouterLink}
                   to="/signup"

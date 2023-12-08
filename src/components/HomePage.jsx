@@ -1,47 +1,17 @@
-import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-const Home = ({ user }) => {
-  const [userData, setUserData] = useState(null);
+const Home = () => {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch("/api/user", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          setUserData(result);
-        } else {
-          console.error("Failed to fetch user data");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []); // Run the effect only once when the component mounts
-
+  const handleButtonClick = () => { 
+    navigate("/");
+  }
   return (
     <div>
-      {userData ? (
-        <h1>Hello, {user.username}!</h1>
-      ) : (
-        <p>Loading user data...</p>
-      )}
+      <p>your logged in!</p>
+      <button onClick={handleButtonClick}>Go to Home</button>
     </div>
   );
 };
 
-Home.propTypes = {
-  user: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-  }).isRequired,
-};
 export default Home;

@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 const Signup = () => {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     control,
@@ -23,7 +24,8 @@ const Signup = () => {
     getValues, // Add getValues from useForm
   } = useForm();
 
-const onSubmit = async (data) => {
+  const onSubmit = async (data) => {
+  
   try {
     const response = await fetch("http://localhost:5000/api/auth/signup", {
       method: "POST",
@@ -35,6 +37,7 @@ const onSubmit = async (data) => {
 
     if (response.ok) {
       console.log("User created successfully");
+      navigate("/home");
       // Optionally, you can redirect the user to the login page or perform other actions
     } else {
       const errorData = await response.json();
