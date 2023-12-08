@@ -42,9 +42,8 @@ const Login = () => {
         console.log("Login successful");
         navigate("/home");
       } else {
-        // Handle login failure
         const result = await response.json();
-        // Set an error to display to the user
+        // Set an error to the user
         setError(result.message);
 
         console.error("Login failed:", result.message);
